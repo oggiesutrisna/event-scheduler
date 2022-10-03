@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePesertaRequest;
 use App\Models\Peserta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -37,23 +38,11 @@ class PesertaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePesertaRequest $request)
     {
-        $validator = Validator::validate($request->all(), [
-            'nama' => 'required|max:255',
-            'ttl' => 'required|max:255',
-            'alamat' => 'required|max:255',
-            'instansi' => 'required|max:255',
-            'password' => 'required|max:255',
-        ]);
-        if ($validator->fails()) {
-            return redirect('pesertas.index')
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $validated = $validator->validated();
+        Peserta::create($request->validated());
+
         Alert::success('Sukses', 'Data Peserta berhasil di tambahkan');
-        return view('pesertas.index');
     }
 
     /**
