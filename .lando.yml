@@ -1,0 +1,6 @@
+name: event-scheduler
+recipe: laravel
+config:
+  via: nginx
+  php: "8.1"
+  webroot: public
