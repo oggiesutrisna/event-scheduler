@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PesertaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::prefix('/peserta')->group(function () {
+        Route::get('/', [PesertaController::class, 'index']);
+        Route::post('/', [PesertaController::class, 'store']);
+    });
+});
